@@ -15,7 +15,10 @@ setup(
     url='', # url of package repository
     packages=find_packages(), # automatically find packages in 'src' directory
     install_requires= [
-        'torch'
+        'torch',
+        'torchvision',
+        'opencv-python',
+        'git+https://github.com/facebookresearch/segment-anything.git'
     ], # list of the dependencies required by the package
     classifiers=[
         'Programming Language :: Python :: 3.12.3'
