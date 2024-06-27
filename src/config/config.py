@@ -15,7 +15,7 @@ class Config():
         # training and validation set paths
         self.TRAINSET_PATH = '' # set training set path
         self.VALIDSET_PATH = '' # set validation set path
-        self.SAMPLE_IMAGE_PATH = os.path.join(self.CWD,'data/Peanut-seed-dataset/train/Peanut 55.jpeg') # set path for any images available in the trainset/train directory
+        self.SAMPLE_IMAGE_PATH = os.path.join(self.CWD,'data/raw/train/1.jpeg') # set path for any images available in the trainset/train directory
 
         # weight and biases config
         self.ENTITY = '' # set team/organization name for wandb account
