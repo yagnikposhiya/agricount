@@ -1,7 +1,7 @@
 """
 author: Yagnik Poshiya
 github: @yagnikposhiya
-organization: NEUROWORK Research Labs
+organization: Tvisi
 """
 
 import os
@@ -44,3 +44,12 @@ class Config():
         """
 
         print("Configurations:")
+        print(f"Current working directory: {self.CWD} \n",
+              f"Trainset path: {self.TRAINSET_PATH} \n",
+              f"Validset path: {self.VALIDSET_PATH} \n",
+              f"Sample image path: {self.SAMPLE_IMAGE_PATH} \n",
+              f"Batch size: {self.BATCH_SIZE} \n",
+              f"Maximum epochs: {self.MAX_EPOCHS} \n",
+              f"Number of classes: {self.NUM_CLASSES} \n",
+              f"Learning rate: {self.LEARNING_RATE} \n",
+              f"Tranformation/Augmentation: {self.TRANSFORM} \n")

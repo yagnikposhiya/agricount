@@ -1,13 +1,13 @@
 """
 author: Yagnik Poshiya
 github: @yagnikposhiya
-organization: NEUROWORK Research Labs
+organization: Tvisi
 """
 
 from setuptools import setup, find_packages
 
 setup(
-    name='NRL-agri-count', # name of the package
+    name='agri-count', # name of the package
     version='1.0.0', # version of the package
     description='Calculation of peanut seeds within single video frame',
     author='tvisi', # author of the package
