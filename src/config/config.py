@@ -17,6 +17,9 @@ class Config():
         self.VALIDSET_PATH = '' # set validation set path
         self.SAMPLE_IMAGE_PATH = os.path.join(self.CWD,'data/raw/train/1.jpeg') # set path for any images available in the trainset/train directory
 
+        # other relevant paths
+        self.INPUT_JSON_FILE_PATH = '/home/yagnikposhiya/workstation/lab/agri-count/data/raw/json_project/Peanut-Seeds-Project_20.json' # set json file path which contains mask region information
+
         # weight and biases config
         self.ENTITY = '' # set team/organization name for wandb account
         self.PROJECT = '' # set project name
@@ -43,13 +46,17 @@ class Config():
         - (None)
         """
 
-        print("Configurations:")
-        print(f"Current working directory: {self.CWD} \n",
-              f"Trainset path: {self.TRAINSET_PATH} \n",
-              f"Validset path: {self.VALIDSET_PATH} \n",
-              f"Sample image path: {self.SAMPLE_IMAGE_PATH} \n",
-              f"Batch size: {self.BATCH_SIZE} \n",
-              f"Maximum epochs: {self.MAX_EPOCHS} \n",
-              f"Number of classes: {self.NUM_CLASSES} \n",
-              f"Learning rate: {self.LEARNING_RATE} \n",
-              f"Tranformation/Augmentation: {self.TRANSFORM} \n")
+        print("-----------------------------------------------------------")
+        print("-----------------------CONFIGURATIONS----------------------")
+        print("-----------------------------------------------------------")
+        print("\n",
+              f"- Current working directory: {self.CWD}\n",
+              f"- Trainset path: {self.TRAINSET_PATH}\n",
+              f"- Validset path: {self.VALIDSET_PATH}\n",
+              f"- Sample image path: {self.SAMPLE_IMAGE_PATH}\n",
+              f"- Input JSON file path: {self.INPUT_JSON_FILE_PATH}\n",
+              f"- Batch size: {self.BATCH_SIZE}\n",
+              f"- Maximum epochs: {self.MAX_EPOCHS}\n",
+              f"- Number of classes: {self.NUM_CLASSES}\n",
+              f"- Learning rate: {self.LEARNING_RATE}\n",
+              f"- Tranformation/Augmentation: {self.TRANSFORM}\n")
