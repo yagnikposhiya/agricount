@@ -30,7 +30,7 @@ if __name__ == '__main__':
     print("-----------------------------------------------------------")
     
     input_files = glob.glob(f'{config.INPUT_JSON_FILE_PATH}/File*.json') # create list of json files available @ config.INPUT_JSON_FILE_PATH
-    output_file = f'{config.INPUT_JSON_FILE_PATH}/merge.json' # define path for json file, contains merged data from multiple json files
+    output_file = f'{config.INPUT_JSON_FILE_PATH}/Merge.json' # define path for json file, contains merged data from multiple json files
     merge_json_files(input_files=input_files, output_file=output_file) # merge multiple json files
 
     print("Creating mask images from json data...")
