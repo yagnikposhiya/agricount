@@ -4,6 +4,7 @@ github: @yagnikposhiya
 organization: Tvisi
 """
 
+import os
 import json
 
 from typing import Any
@@ -38,8 +39,13 @@ def merge_json_files(input_files:list, output_file:str) -> Any:
 
     merged_data = {key: value for d in dictionaries_list for key, value in d.items()} # merging all dictionaries data
 
-    outfile = open(output_file, 'w') # open json file in writing mode
-    json.dump(merged_data, outfile) # write merged json data to the output_file with indent=4 
+    directory_path, filename = os.path.split(output_file) # split output_file path into two parts; 1) directory path and 2) filename
+
+    if os.path.exists(directory_path): # check that directory exists or not
+        outfile = open(output_file, 'w') # open json file in writing mode
+        json.dump(merged_data, outfile) # write merged json data to the output_file with indent=4 
+    else:
+        raise DirectoryDoesNotExist(directory_path) # raise an exception that directory does not exist
     
     if len(input_files) > 1: # if more than one json files are available
         print(f'{len(input_files)} json files are merged successfully.')
