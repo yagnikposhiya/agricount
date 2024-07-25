@@ -93,7 +93,7 @@ def createMasks(json_file_path: str, raw_image_dir:str, base_data_path:str) -> s
 
     trainset_path = f'{base_data_path}/processed/train' # set trainset path
     trainset_images_path = f'{base_data_path}/processed/train/images' # set trainset images path
-    input_data = input_data['_via_img_metadata'] # extract data related to mask regions only
+    # input_data = input_data['_via_img_metadata'] # extract data related to mask regions only
 
     for filename in os.listdir(raw_image_dir): # list all files available in the images directory of raw directory
         full_filename = os.path.join(raw_image_dir,filename) # create full filename
