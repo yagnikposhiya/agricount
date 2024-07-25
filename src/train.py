@@ -6,7 +6,7 @@ organization: Tvisi
 
 from config.config import Config
 from gpu_config.check import check_gpu_config
-from customdata import LookAtJSONStructure, createMasks
+from customdata import look_at_json_structure, createMasks
 
 
 if __name__ == '__main__':
@@ -20,7 +20,7 @@ if __name__ == '__main__':
     print("--------------UNDERSTANDING JSON FILE STRUCTURE------------")
     print("-----------------------------------------------------------")
 
-    LookAtJSONStructure(config.INPUT_JSON_FILE_PATH) # understand JSON file structure and which information it contains
+    look_at_json_structure(config.INPUT_JSON_FILE_PATH) # understand JSON file structure and which information it contains
 
     print("-----------------------------------------------------------")
     print("------------------CREATING PROCESSED DATASET---------------")
