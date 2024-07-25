@@ -4,12 +4,13 @@ github: @yagnikposhiya
 organization: Tvisi
 """
 
+import os
 import glob
 
 from config.config import Config
 from gpu_config.check import check_gpu_config
 from customdata import look_at_json_structure, createMasks
-from utils.utils import merge_json_files
+from utils.utils import merge_json_files, show_mask_image_pair
 
 
 if __name__ == '__main__':
@@ -35,3 +36,8 @@ if __name__ == '__main__':
 
     print("Creating mask images from json data...")
     createMasks(output_file, config.RAW_IMAGE_DIR, config.BASE_DATA_PATH) # create mask images from existing mask region information i.e. XY co-ordinates
+
+    config.TRAINSET_PATH = os.path.join(config.BASE_DATA_PATH,f'processed/train')
+
+    show_mask_image_pair(image_dir=os.path.join(config.TRAINSET_PATH,'images'),
+                         mask_dir=os.path.join(config.TRAINSET_PATH,'masks')) # visualize mask-image pairs
