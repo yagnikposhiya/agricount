@@ -18,7 +18,8 @@ class Config():
         self.SAMPLE_IMAGE_PATH = os.path.join(self.CWD,'data/raw/train/1.jpeg') # set path for any images available in the trainset/train directory
 
         # other relevant paths
-        self.INPUT_JSON_FILE_PATH = os.path.join(self.CWD,'data/raw/json_project/File1.json') # set json file path which contains mask region information
+        self.INPUT_JSON_FILE_PATH = os.path.join(self.CWD,'data/raw/json_projects') # set path to the directory which contains one or more than one json files
+        self.SAMPLE_JSON_FILE_PATH = os.path.join(self.CWD,'data/raw/json_projects/File1.json') # set path to the json file for understanding json file structure
         self.RAW_IMAGE_DIR = os.path.join(self.CWD,'data/raw/images') # set raw image directory
         self.BASE_DATA_PATH = os.path.join(self.CWD,'data/') # set base data folder path
 
@@ -57,6 +58,7 @@ class Config():
               f"- Validset path: {self.VALIDSET_PATH}\n",
               f"- Sample image path: {self.SAMPLE_IMAGE_PATH}\n",
               f"- Input JSON file path: {self.INPUT_JSON_FILE_PATH}\n",
+              f"- Sample JSON file path: {self.SAMPLE_JSON_FILE_PATH}\n"
               f"- Raw image directory: {self.RAW_IMAGE_DIR}\n",
               f"- Base data path: {self.BASE_DATA_PATH}\n",
               f"- Batch size: {self.BATCH_SIZE}\n",
