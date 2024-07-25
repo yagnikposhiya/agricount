@@ -19,7 +19,7 @@ class FileDoesNotExist(BaseException): # create custom class to raise an error
 class DirectoryDoesNotExist(BaseException): # create custom class to raise an error
     pass
 
-def LookAtJSONStructure(json_file_path: str) -> None:
+def look_at_json_structure(json_file_path: str) -> None:
     """
     This function is used to understand the JSON file structure and what information it contains.
 
