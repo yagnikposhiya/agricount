@@ -18,7 +18,7 @@ class Config():
         self.SAMPLE_IMAGE_PATH = os.path.join(self.CWD,'data/raw/train/1.jpeg') # set path for any images available in the trainset/train directory
 
         # other relevant paths
-        self.INPUT_JSON_FILE_PATH = os.path.join(self.CWD,'data/raw/json_project/Peanut-Seeds-Project_20.json') # set json file path which contains mask region information
+        self.INPUT_JSON_FILE_PATH = os.path.join(self.CWD,'data/raw/json_project/File1.json') # set json file path which contains mask region information
         self.RAW_IMAGE_DIR = os.path.join(self.CWD,'data/raw/images') # set raw image directory
         self.BASE_DATA_PATH = os.path.join(self.CWD,'data/') # set base data folder path
 
