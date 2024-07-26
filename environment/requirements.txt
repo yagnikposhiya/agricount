@@ -1,4 +1,7 @@
 torch
 torchvision
 opencv-python
+matplotlib
+numpy
+lightning
 git+https://github.com/facebookresearch/segment-anything.git
