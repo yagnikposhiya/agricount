@@ -15,13 +15,14 @@ class Config():
         # training and validation set paths
         self.TRAINSET_PATH = '' # set training set path
         self.VALIDSET_PATH = '' # set validation set path
-        self.SAMPLE_IMAGE_PATH = os.path.join(self.CWD,'data/raw/train/1.jpeg') # set path for any images available in the trainset/train directory
+        self.TRAIN_IMAGE_DIR = '' # set train/images directory path
+        self.TRAIN_MASK_DIR = '' # set train/masks directory path
 
         # other relevant paths
         self.INPUT_JSON_FILE_PATH = os.path.join(self.CWD,'data/raw/json_projects') # set path to the directory which contains one or more than one json files
         self.SAMPLE_JSON_FILE_PATH = os.path.join(self.CWD,'data/raw/json_projects/File1.json') # set path to the json file for understanding json file structure
         self.RAW_IMAGE_DIR = os.path.join(self.CWD,'data/raw/images') # set raw image directory
-        self.BASE_DATA_PATH = os.path.join(self.CWD,'data/') # set base data folder path
+        self.BASE_DATA_PATH = os.path.join(self.CWD,'data') # set base data folder path
 
         # weight and biases config
         self.ENTITY = '' # set team/organization name for wandb account
@@ -33,7 +34,7 @@ class Config():
         # model training parameters
         self.BATCH_SIZE = 16 # set batch size for model training
         self.MAX_EPOCHS = 2 # set maximum epochs for model training
-        self.NUM_CLASSES = 4 # set number of classes contains by mask images (in segmentation case)
+        self.NUM_CLASSES = 2 # set number of classes contains by mask images (in segmentation case)
         self.LEARNING_RATE = 0.001 # set learning rate
         self.TRANSFORM = True # set booelan values for applying augmentation techniques for training set
 
@@ -56,7 +57,8 @@ class Config():
               f"- Current working directory: {self.CWD}\n",
               f"- Trainset path: {self.TRAINSET_PATH}\n",
               f"- Validset path: {self.VALIDSET_PATH}\n",
-              f"- Sample image path: {self.SAMPLE_IMAGE_PATH}\n",
+              f"- Train image directory: {self.TRAIN_IMAGE_DIR}\n",
+              f"- Train mask directory: {self.TRAIN_MASK_DIR}\n",
               f"- Input JSON file path: {self.INPUT_JSON_FILE_PATH}\n",
               f"- Sample JSON file path: {self.SAMPLE_JSON_FILE_PATH}\n"
               f"- Raw image directory: {self.RAW_IMAGE_DIR}\n",
