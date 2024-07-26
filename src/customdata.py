@@ -7,24 +7,29 @@ organization: Tvisi
 import os
 import cv2
 import json
+import torch
 import shutil
+import random
 import numpy as np
-import matplotlib.pyplot as plt
+import pytorch_lightning as pl
 
+from PIL import Image
+from typing import Any
 from collections import Counter
+from torch.utils.data import Dataset, DataLoader, random_split
 
 class FileDoesNotExist(BaseException): # create custom class to raise an error
-    pass
+    pass # no actions are needed
 
 class DirectoryDoesNotExist(BaseException): # create custom class to raise an error
-    pass
+    pass # no actions are needed
 
 def look_at_json_structure(json_file_path: str) -> None:
     """
     This function is used to understand the JSON file structure and what information it contains.
 
     Parameters:
-    - json_file_path (str): input json file path which contains mask region XY co-ordinates
+    - json_file_path (str): Input json file path which contains mask region XY co-ordinates
 
     Returns:
     - (None)
@@ -66,9 +71,9 @@ def createMasks(json_file_path: str, raw_image_dir:str, base_data_path:str) -> s
     json file related to mask regions in each image.
 
     Parameters:
-    - json_file_path (str): input json file path which contains mask region XY co-ordinates
-    - raw_image_dir (str): directory path contains raw images mentioned in the json file
-    - base_data_path (str): path for data directory
+    - json_file_path (str): Input json file path which contains mask region XY co-ordinates
+    - raw_image_dir (str): Directory path contains raw images mentioned in the json file
+    - base_data_path (str): Path for data directory
 
     Returns:
     - (None)
@@ -176,3 +181,89 @@ def createMasks(json_file_path: str, raw_image_dir:str, base_data_path:str) -> s
             print(f'File is not available in the dataset.: {image_path}') # if file(image_path) is not available in the filtered_filenames list
 
     print("Mask image are created successfully.")
+
+class SegmentationDataset(Dataset):
+    def __init__(self, images_dir:str, masks_dir:str, transform:bool=False) -> None:
+        self.images_dir = images_dir # set path to directory contains input images
+        self.masks_dir = masks_dir # set path to directory contains mask images
+        self.transform = transform # set boolean value for transform/augmentation
+
+        self.image_files = sorted(os.listdir(images_dir)) # generate a list of input images
+        self.mask_files = sorted(os.listdir(masks_dir)) # generate a list of mask images
+
+    def __len__(self) -> int:
+        return len(self.image_files) # return total number of data samples available in the dataset
+    
+    def __getitem__(self,index) -> Any:
+        image_path = os.path.join(self.images_dir, self.image_files[index]) # generate path for a single image
+        mask_path = os.path.join(self.masks_dir, self.mask_files[index]) # generate path for a single mask image
+
+        image = cv2.imread(image_path, cv2.IMREAD_COLOR) # read an input image as a colored image
+        mask = cv2.imread(mask_path, cv2.IMREAD_GRAYSCALE) # read a mask image as a grayscale image
+
+        """
+        There is no need to do anything related to one-hot encoding for mask images. Once you have clarify the number of classes
+        at the time of the model implementation then it will work in the segmentation task.
+        """
+
+        """
+        Tensors with negative strides are not currently supported that is why we have to use PIL and 
+        then have to apply transformations.
+        """
+        
+        image = Image.fromarray(image).convert("L") # convert to PIL grayscale images
+        mask = Image.fromarray(mask).convert("L") # convert to PIL grayscale images
+
+        if self.transform: # if transform/augmentation value is set to True
+            random_int = random.randint(0,2) # return random interge including both end-points
+            if random_int == 0:
+                image = image # no transformation/augmentation technique is applied
+            elif random_int == 1:
+                image = np.flip(image, axis=0) # i.e. vertical flipping (first raw & last raw) -> (last raw -> first raw)
+                mask = np.flip(mask, axis=0) # i.e. vertical flipping
+            elif random_int == 2:
+                image = np.flip(image, axis=1) # i.e. horizontal flipping (first column & last column) -> (last column -> first column)
+                mask = np.flip(mask, axis=1) # i.e. horizontal flipping
+
+        # convert back to numpy arrays
+        image = np.array(image)
+        mask = np.array(mask)
+
+        # remove negative strides
+        image = image.copy()
+        mask = mask.copy()
+
+        image = torch.tensor(image, dtype=torch.float32) # convert to torch tensor
+        mask = torch.tensor(mask, dtype=torch.long) # convert to torch tensor
+
+        return image, mask # return image and mask in the form of tuple
+    
+class SegmentationDataModule(pl.LightningDataModule):
+    def __init__(self, train_image_dir:str, train_mask_dir:str, batch_size:int=32, transform:bool=False, val_split:float=0.2, test_split:float=0.1) -> None:
+        super(SegmentationDataModule, self).__init__()
+        self.train_image_dir = train_image_dir # set path to directory contains input images for training
+        self.train_mask_dir = train_mask_dir # set path to directory contains input mask images for training
+        self.batch_size = batch_size # set batch size
+        self.transform = transform # set boolean value for transformation/augmentation
+        self.val_split = val_split # set validation set split ratio
+        self.test_split = test_split # set test set split ratio
+
+    def setup(self, stage=None) -> None:
+        self.train_dataset = SegmentationDataset(self.train_image_dir, self.train_mask_dir, self.transform) # create an instance of SegmentationDataset class and load data samples as needed
+        # self.val_dataset = SegmentationDataset(self.val_image_dir, self.val_mask_dir) # same as trainset loading just transform is not applied to the validation set
+        val_size = int(len(self.train_dataset) * self.val_split) # calculate validation set size
+        # test_size = int(len(self.train_dataset) * test_size) # calculate test set size
+        # train_size = len(self.train_dataset) - val_size - test_size # calculate train set size
+        train_size = len(self.train_dataset) - val_size # calculate train set size
+
+        # self.train_dataset, self.val_dataset, self.test_dataset = random_split(self.train_dataset, [train_size,val_size, test_size]) # split whole dataset into train and validation
+        self.train_dataset, self.val_dataset = random_split(self.train_dataset, [train_size,val_size]) # split whole dataset into train and validation
+
+    def train_dataloader(self) -> Any:
+        return DataLoader(self.train_dataset, batch_size=self.batch_size, shuffle=True) # return train set
+    
+    def val_dataloader(self) -> Any:
+        return DataLoader(self.val_dataset, batch_size=self.batch_size) # return validation set
+    
+    # def test_dataloader(self) -> Any:
+    #     return DataLoader(self.test_dataset, batch_size=self.batch_size) # return test set
