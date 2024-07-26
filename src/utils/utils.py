@@ -10,6 +10,7 @@ import glob
 import json
 import random
 import matplotlib
+import numpy as np
 import matplotlib.pyplot as plt
 
 from typing import Any
@@ -93,7 +94,7 @@ def show_mask_image_pair(image_dir:str, mask_dir:str) -> None:
 
                 # overlay_image = cv2.addWeighted(image, 1-opacity, mask_color, opacity, 0) # overlay the mask onto original image
 
-                fig, (ax1,ax2) = plt.subplots(nrows=1, ncols=2, figsize=(20,20)) # create a canvas with 1 rows and 2 cols with 20*20 figure size
+                fig, (ax1,ax2) = plt.subplots(nrows=1, ncols=2, figsize=(40,40)) # create a canvas with 1 rows and 2 cols with 20*20 figure size
 
                 ax1.imshow(image, cmap='gray') # visualize an image
                 ax1.set_title(f'{image_name}') # set image name as a title
@@ -117,3 +118,73 @@ def show_mask_image_pair(image_dir:str, mask_dir:str) -> None:
 
         except BaseException:
             pass # do nothing ignore the exception
+
+def get_user_choice(start:int, end:int) -> int:
+    """
+    This function is used to get integer user choice within specific range including both end-points.
+
+    Parameters:
+    - start (int): Starting point of the range
+    - end (int: Ending point of the range
+
+    Returns:
+    - (int): Integer user choice
+    """
+
+    while True:
+        try:
+            user_choice = int(input(f'Enter an integer number between {start} and {end}: ')) # ask user to enter his/her choice
+
+            if start <= user_choice <= end:
+                return user_choice
+            else:
+                print(f'Invalid number. Enter an integer number between {start} and {end}') # ask user to enter a choice between specified range
+        except ValueError:
+            print(f'Invalid number. Enter an integer number between {start} and {end}') # ask user to enter a choice between specified range
+
+def available_models() -> tuple:
+    """
+    This is used to provide a list of neural net architectures available for training on the existing dataset(s).
+
+    Parameters:
+    - (None)
+
+    Returns:
+    - (list,int): Returns tuple contains list of available neural net archs and user choice; (available_nn_arch, user_choice)
+    """
+
+    models = ['DNA-Segment'] # list of available models
+
+    print('Select any one neural net architecture from the list given below')
+    for i in range(len(models)):
+        print(f'{i}_________{models[i]}') # print list of available models with the integer model number
+
+    if (len(models)-1) == 0:
+        return models, np.uint8(0) # only one neural net architecture is there; no need to ask to user for their choice
+    else:
+        return models, get_user_choice(0,len(models)-1) # get user choice
+    
+def available_optimizers() -> tuple:
+    """
+    This function is used to provide list of optimizers available for selected neural net architectures.
+
+    Parameters:
+    - (None)
+
+    Returns:
+    - (list,int): Returns tuple contains list of available optimizers and user choice; (available optimizers, user_choice)
+    """
+
+    optimizers = ['Adam',
+                  'AdamW',
+                  'RMSProp',
+                  'SGD'] # list of available optimizers
+    
+    print('Select any one optimizer from the list given below')
+    for i in range(len(optimizers)):
+        print(f'{i}_________{optimizers[i]}') # print list of available optimizers with the integer optimizer number
+
+    if len(optimizers) == 0:
+        return optimizers, np.uint(0) # only one optimizer is there; no need to ask to user for their choice
+    else:
+        return optimizers, get_user_choice(0, len(optimizers)-1) # get user choice
