@@ -12,7 +12,7 @@ from config.config import Config
 from gpu_config.check import check_gpu_config
 from customdata import SegmentationDataModule
 from customdata import look_at_json_structure, createMasks
-from utils.utils import merge_json_files, show_mask_image_pair
+from utils.utils import merge_json_files, show_mask_image_pair, available_models, available_optimizers
 
 
 if __name__ == '__main__':
@@ -37,7 +37,9 @@ if __name__ == '__main__':
     merge_json_files(input_files=input_files, output_file=output_file) # merge multiple json files
 
     print("Creating mask images from json data...")
-    createMasks(output_file, config.RAW_IMAGE_DIR, config.BASE_DATA_PATH) # create mask images from existing mask region information i.e. XY co-ordinates
+    createMasks(json_file_path=output_file, 
+                raw_image_dir=config.RAW_IMAGE_DIR, 
+                base_data_path=config.BASE_DATA_PATH) # create mask images from existing mask region information i.e. XY co-ordinates
 
     config.TRAINSET_PATH = os.path.join(config.BASE_DATA_PATH,f'processed/train')
 
@@ -52,3 +54,14 @@ if __name__ == '__main__':
                                          train_mask_dir=config.TRAIN_MASK_DIR,
                                          batch_size=config.BATCH_SIZE,
                                          transform=config.TRANSFORM) # initialize the data module
+    
+    print("-----------------------------------------------------------")
+    print("---------------NN ARCHITECTURE (MODEL) SELECTION-----------")
+    print("-----------------------------------------------------------")
+
+    available_nn_archs, user_choice_nn_arch = available_models() # give list of available neural net architectures to user for training
+    available_optims, user_choice_optimizer = available_optimizers() # give list of available optimizers to user for neural net configuration
+    print(f'{available_nn_archs[user_choice_nn_arch]} neural net architecture is selected with {available_optims[user_choice_optimizer]} optimizer.')
+
+
+
