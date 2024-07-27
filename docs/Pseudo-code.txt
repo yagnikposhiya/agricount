@@ -1,0 +1,48 @@
+Input Image (720, 1280, 3)
+     |
+     v
+-------------------------
+| Stage 1               |
+|                       |
+| Encoder               |--> Skip Connections 1
+|                       |
+| Bottleneck            |
+|                       |
+| Decoder               |--> Skip Connections 1
+-------------------------
+     |
+     v
+---------------------------
+| Upsample +                |
+| Skip Connections from     |
+| Stage 1 Encoder           |
+---------------------------
+     |
+     v
+Concatenate with Original Input
+     |
+     v
+-------------------------
+| Stage 2               |<-- Connections from Stage 1 Decoder
+|                       |
+| Encoder               |--> Skip Connections 2
+|                       |
+| Bottleneck            |
+|                       |
+| Decoder               |
+|                       |--> Skip Connections 2
+-------------------------
+     |
+     v
+---------------------------
+| Upsample +                |
+| Skip Connections from     |
+| Stage 2 Encoder           |
+---------------------------
+     |
+     v
+Final Convolution
+     |
+     v
+Segmentation Map (720, 1280, 2)
+
