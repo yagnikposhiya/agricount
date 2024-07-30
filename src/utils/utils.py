@@ -8,6 +8,7 @@ import os
 import cv2
 import glob
 import json
+import torch
 import random
 import matplotlib
 import numpy as np
@@ -188,3 +189,37 @@ def available_optimizers() -> tuple:
         return optimizers, np.uint(0) # only one optimizer is there; no need to ask to user for their choice
     else:
         return optimizers, get_user_choice(0, len(optimizers)-1) # get user choice
+    
+def save_trained_model(model: Any, path:str, model_prefix:str, optimizer:str, epochs:int) -> None:
+    """
+    This function is used to save trained neural net architecture with .pth extension at specified path.
+
+    Parameters:
+    - model (any): model file which contains metadata with neural network weights
+    - path (str): path to the directory where model will be saved
+    - model_prefix (str): model file will be saved with this prefix (ultimately model name)
+    - optimizer (str): optimizer selected by user
+    - epochs (int): total number of epochs
+
+    Returns:
+    - (None)
+    """
+
+    if not os.path.exists(path): # check directory exists or not
+        os.makedirs(path) # if not then create it
+
+    model_prefix = model_prefix.replace(' ','_') # replace white space with the underscore if white space is available in the model prefix
+    model_prefix = model_prefix.replace('(','').replace(')','') # replace any open or close brackets avaialable in model prefix white empty string; removal of brackets
+
+    counter = 0 # set counter to zero initially
+
+    while True:
+        model_file_name = f'{model_prefix}_{optimizer}_{str(epochs)}_{counter}.pth' # generate model file name
+        if not os.path.exists(os.path.join(path, model_file_name)):
+            break
+        else:
+            counter += 1 # increment counter by one
+
+    torch.save(model.state_dict(), os.path.join(path,model_file_name)) # save trained model @ specified path with specified name
+    print(f'Trained model is successfully saved  at: \n{os.path.join(path,model_file_name)}')
+        
