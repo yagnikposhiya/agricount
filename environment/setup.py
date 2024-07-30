@@ -18,6 +18,10 @@ setup(
         'torch',
         'torchvision',
         'opencv-python',
+        'matplotlib',
+        'numpy',
+        'lightning',
+        'torchinfo',
         'git+https://github.com/facebookresearch/segment-anything.git'
     ], # list of the dependencies required by the package
     classifiers=[
