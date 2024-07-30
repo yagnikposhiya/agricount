@@ -23,10 +23,11 @@ class Config():
         self.SAMPLE_JSON_FILE_PATH = os.path.join(self.CWD,'data/raw/json_projects/File1.json') # set path to the json file for understanding json file structure
         self.RAW_IMAGE_DIR = os.path.join(self.CWD,'data/raw/images') # set raw image directory
         self.BASE_DATA_PATH = os.path.join(self.CWD,'data') # set base data folder path
+        self.PATH_TO_SAVE_TRAINED_MODEL = os.path.join(self.CWD,'saved_models') # set path to save trained model
 
         # weight and biases config
-        self.ENTITY = '' # set team/organization name for wandb account
-        self.PROJECT = '' # set project name
+        self.ENTITY = 'neuralninjas' # set team/organization name for wandb account
+        self.PROJECT = 'tvisi-agri-count' # set project name
         self.REINIT = True # set boolean value for reinitialization
         self.ANONYMOUS = 'allow' # set anonymous value type
         self.LOG_MODEL = 'all' # set log model type
@@ -60,9 +61,10 @@ class Config():
               f"- Train image directory: {self.TRAIN_IMAGE_DIR}\n",
               f"- Train mask directory: {self.TRAIN_MASK_DIR}\n",
               f"- Input JSON file path: {self.INPUT_JSON_FILE_PATH}\n",
-              f"- Sample JSON file path: {self.SAMPLE_JSON_FILE_PATH}\n"
+              f"- Sample JSON file path: {self.SAMPLE_JSON_FILE_PATH}\n",
               f"- Raw image directory: {self.RAW_IMAGE_DIR}\n",
               f"- Base data path: {self.BASE_DATA_PATH}\n",
+              f"- Path to save trained model: {self.PATH_TO_SAVE_TRAINED_MODEL}\n",
               f"- Batch size: {self.BATCH_SIZE}\n",
               f"- Maximum epochs: {self.MAX_EPOCHS}\n",
               f"- Number of classes: {self.NUM_CLASSES}\n",
